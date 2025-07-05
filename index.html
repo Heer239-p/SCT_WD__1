@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Light & Responsive Landing</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+      background: linear-gradient(135deg, #d0e7f9, #f0f9ff);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      height: 60px;
+      background-color: rgba(255 255 255 / 0.9);
+      color: #008080;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 999;
+      user-select: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    header.scrolled {
+      background-color: rgba(200 230 230 / 0.95);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      color: #006666;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: #008080;
+    }
+    .logo:hover {
+      color: #004c4c;
+    }
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+    nav a {
+      color: #006666;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      padding: 0.3rem 0;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0;
+      height: 2px;
+      background: #008080;
+      transition: width 0.3s ease;
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+    nav a.active {
+      color: #004c4c;
+      font-weight: 700;
+    }
+    header.scrolled nav a.active {
+      color: #003333;
+    }
+    .menu-btn {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: inherit;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    .menu-btn.open {
+      transform: rotate(90deg);
+    }
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: rgba(240 249 255 / 0.95);
+        flex-direction: column;
+        display: none;
+        padding: 1rem 2rem;
+        transition: max-height 0.3s ease;
+        overflow: hidden;
+      }
+      nav.show {
+        display: flex;
+      }
+      nav a {
+        padding: 1rem 0;
+        color: #004c4c;
+      }
+      nav a.active {
+        color: #002a2a;
+      }
+      nav a::after {
+        display: none;
+      }
+      .menu-btn {
+        display: block;
+      }
+    }
+    main {
+      padding-top: 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    section {
+      padding: 5rem 0;
+      border-bottom: 1px solid #a0c4c4;
+      color: #333;
+      text-shadow: none;
+    }
+    section:last-child {
+      border-bottom: none;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #008080;
+    }
+    section p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 650px;
+      color: #555;
+    }
+
+
+    .home-img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-top: 2rem;
+    }
+    .features-container {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .features-text {
+      flex: 1 1 300px;
+    }
+    .features-img {
+      flex: 1 1 300px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .pricing-img {
+      max-width: 200px;
+      display: block;
+      margin: 1rem auto 0 auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .contact-container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    .contact-form {
+      flex: 1 1 320px;
+      max-width: 450px;
+    }
+    .contact-img {
+      flex: 1 1 300px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      border: 1.5px solid #008080;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      color: #004c4c;
+      background: #e6f2f2;
+      transition: border-color 0.3s ease;
+    }
+    input:focus, textarea:focus {
+      border-color: #004c4c;
+      outline: none;
+      background: #d9f0f0;
+    }
+    button {
+      background-color: #008080;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #005f5f;
+    }
+    @media (max-width: 768px) {
+      .features-container, .contact-container {
+        flex-direction: column;
+      }
+      .features-img, .contact-img {
+        max-width: 100%;
+      }
+      .contact-form {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Skill Craft Technology</div>
+  <button class="menu-btn" aria-label="Toggle menu">&#9776;</button>
+  <nav>
+    <a href="#home" class="active">Home</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home">
+    <h2>Welcome to Your Next Great Product</h2>
+    <p>Discover how we can help you improve your workflow and increase productivity with our innovative solutions. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pretium purus ut risus vulputate, at convallis elit sagittis.</p>
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80" alt="Product Illustration" class="home-img" />
+  </section>
+
+  <section id="features">
+    <h2>Features</h2>
+    <div class="features-container">
+      <div class="features-text">
+        <p>Our product offers fast performance, easy integration, and 24/7 support. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dapibus feugiat ligula, in tincidunt justo blandit sed. Integer non purus eu lorem tristique consequat.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="Features Illustration" class="features-img" />
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p>Choose a plan that fits your needs. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat, urna a tempor sodales, metus metus egestas turpis, et condimentum neque risus eu nibh.</p>
+    <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=400&q=80" alt="Pricing Illustration" class="pricing-img" />
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-container">
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for contacting us!');">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea rows="4" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80" alt="Contact Illustration" class="contact-img" />
+    </div>
+  </section>
+</main>
+
+<script>
+  const header = document.querySelector('header');
+  const menuBtn = document.querySelector('.menu-btn');
+  const nav = document.querySelector('nav');
+  const navLinks = nav.querySelectorAll('a');
+
+  menuBtn.addEventListener('click', () => {
+    nav.classList.toggle('show');
+    menuBtn.classList.toggle('open');
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      nav.classList.remove('show');
+      menuBtn.classList.remove('open');
+
+      const targetId = link.getAttribute('href').slice(1);
+      const targetSection = document.getElementById(targetId);
+      targetSection.scrollIntoView({ behavior: 'smooth' });
+
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+
+    const scrollPos = window.scrollY + 70;
+
+    navLinks.forEach(link => {
+      const section = document.querySelector(link.hash);
+      if(section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  });
+
+  window.dispatchEvent(new Event('scroll'));
+</script>
+
+</body>
+</html>
